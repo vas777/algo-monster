@@ -44,6 +44,74 @@ fn find_boundary(arr: Vec<bool>) -> i32 {
     if l == arr.len() { -1 } else { l as i32 }
 }
 
+
+fn first_not_smaller(arr: Vec<i32>, target: i32) -> i32 {
+    let len = arr.len();
+    if len == 0 {
+        return -1;
+    }
+
+    let mut l = 0;
+    let mut r = len-1;
+    let mut m = l + (r-l)/2;
+    while r>l {
+        if arr[m] < target {
+            l = m + 1;
+        } else if arr[m] >= target {
+            r = m;
+        }
+        m = l + (r-l)/2;
+    }
+
+    if m == len-1 && arr[m] < target {
+        return -1;
+    }
+    
+    m as i32 
+}
+
+fn find_first_occurrence(arr: Vec<i32>, target: i32) -> i32 {
+    let len = arr.len();
+    if len == 0 {
+        return -1;
+    }
+    let mut l = 0;
+    let mut r = arr.len()-1;
+    let mut m = l + (r-l)/2;
+
+    while l<r {
+        if arr[m] >= target {
+            r = m;
+        } else if arr[m] < target {
+            l = m + 1;
+        }
+        m = l + (r-l)/2;
+    }
+
+    if m == r && arr[m] != target {
+        return -1;
+    }
+    
+    m as i32
+}
+
+
+fn square_root_naive(n: i32) -> i32 {
+
+    let mut res = 1;
+    res = loop{
+      if res*res == n {
+          break res;
+      } else if res*res > n {
+          break res-1;
+      } else {
+          res +=1;
+      } 
+    };
+    
+    return res;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

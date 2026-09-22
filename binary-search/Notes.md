@@ -44,3 +44,18 @@ so we would need
 mid = left+1 
 when deciding to change range. 
 3. Should I discard the current element?
+
+22.09.2026
+
+# Monotonic function 
+
+Either 
+f(x_n) <= f(x_n+1) - always increasing 
+or
+f(x_n) >= f(x_n+1) - always decreasing
+
+Sorted array is similar to monotonic function.
+A `feasibility` function for sorted array of booleans is to find
+first True (arr[mid]==true).
+For searching target in the array feasibility is (arr[mid]>=target).
+it turns array into false followed by true.  
