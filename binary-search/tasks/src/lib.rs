@@ -7,6 +7,8 @@ fn binary_search(arr: Vec<i32>, target: i32) -> i32 {
     // half-open interval invariant: search in [left, right) with right = arr.len(), 
     // loop while left < right, and shrink with right = mid / left = mid + 1. 
     // That’s consistent and correct.
+
+    // invariant if target exists within [0, len)
     while left < right {
         middle = left + (right - left) / 2;
         if arr[middle] == target {
@@ -38,52 +40,44 @@ fn find_boundary(arr: Vec<bool>) -> i32 {
 
 fn first_not_smaller(arr: Vec<i32>, target: i32) -> i32 {
     let len = arr.len();
-    if len == 0 {
-        return -1;
-    }
-
     let mut l = 0;
-    let mut r = len - 1;
-    let mut m = l + (r - l) / 2;
-    while r > l {
+    let mut r = arr.len();
+    let mut m = l + (r-l)/2;
+    while l<r {
         if arr[m] < target {
             l = m + 1;
         } else if arr[m] >= target {
             r = m;
         }
-        m = l + (r - l) / 2;
+        m = l + (r-l)/2;
     }
 
-    if m == len - 1 && arr[m] < target {
+    if l == len {
         return -1;
     }
-
-    m as i32
+    
+    m as i32 
 }
 
 fn find_first_occurrence(arr: Vec<i32>, target: i32) -> i32 {
     let len = arr.len();
-    if len == 0 {
-        return -1;
-    }
     let mut l = 0;
-    let mut r = arr.len() - 1;
-    let mut m = l + (r - l) / 2;
-
-    while l < r {
-        if arr[m] >= target {
+    let mut r = arr.len();
+    let mut m = l + (r-l)/2;
+    let mut res: i32 = -1;
+    while l<r {
+        if arr[m] == target {
+            res = m as i32;
+            r = m;
+        } else if arr[m] > target {
             r = m;
         } else if arr[m] < target {
             l = m + 1;
         }
-        m = l + (r - l) / 2;
+        m = l + (r-l)/2;
     }
-
-    if m == r && arr[m] != target {
-        return -1;
-    }
-
-    m as i32
+    
+    res as i32
 }
 
 fn square_root_naive(n: i32) -> i32 {
@@ -127,6 +121,22 @@ fn square_root(n: i32) -> i32 {
     return res;
 }
 
+// Find Minimum in Rotated Sorted Array
+// A sorted array of unique integers was rotated at an unknown pivot. 
+// For example, [10, 20, 30, 40, 50] becomes [30, 40, 50, 10, 20]. 
+// Find the index of the minimum element in this array.
+// Input: [30, 40, 50, 10, 20]
+// Output: 3
+// Explanation: The smallest element is 10, and its index is 3.
+// Input: [3, 5, 7, 11, 13, 17, 19, 2]
+// Output: 7
+// Explanation: The smallest element is 2, and its index is 7.
+
+fn find_min_rotated(arr: Vec<i32>) -> i32 {
+    // WRITE YOUR BRILLIANT CODE HERE
+    0
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -157,16 +167,43 @@ mod tests {
             )
         }
     }
+    #[test]
+        fn first_not_smaller_works() {
+        let input_target_result: Vec<(Vec<i32>, i32, i32)> = vec![
+            (vec![1, 2, 3, 3, 5, 6, 7, 7, 8, 9], 4, 4),
+            (vec![1, 2, 3, 4, 5, 6, 7, 7, 8, 10], 9, 9),
+            (vec![2, 2, 3, 4, 5, 6, 7, 7, 8, 9], 1, 0),
+            (vec![2, 2, 3, 4, 5, 6, 7], 1, 0),
+            (vec![1, 3, 4, 6, 7], 5, 3),
+            (vec![10, 20], 20, 1),
+            (vec![10, 20], 0, 0),
+            (vec![10], 0, 0),
+            (vec![10], 10, 0),
+            (vec![], 0, -1),
+        ];
+
+        for (i, t, r) in input_target_result {
+            assert_eq!(
+                first_not_smaller(i.clone(), t),
+                r,
+                "in {:?} target {} result {}",
+                i,
+                t,
+                r
+            )
+        }
+    }
 
     #[test]
-    fn find_range_works() {
+    fn find_boundary_works() {
         let input_result: Vec<(Vec<bool>, i32)> = vec![
             (vec![false, false, true, true, true], 2),
             (vec![true], 0),
-            (vec![false, false, false], -1),
             (vec![true, true], 0),
             (vec![true, true, true], 0),
             (vec![false, true], 1),
+            (vec![false], -1),
+            (vec![false, false, false], -1),
             (vec![false, false, false, false, false, true], 5),
         ];
 
