@@ -1,7 +1,6 @@
 fn binary_search(arr: Vec<i32>, target: i32) -> i32 {
     let mut left = 0;
     let mut right = arr.len();
-    let mut middle: usize = 0;
     // Your binary search implementation is fine for the “vanilla” problem
     // as long as arr is sorted in nondecreasing order. It uses the common
     // half-open interval invariant: search in [left, right) with right = arr.len(),
@@ -10,7 +9,7 @@ fn binary_search(arr: Vec<i32>, target: i32) -> i32 {
 
     // invariant if target exists within [0, len)
     while left < right {
-        middle = left + (right - left) / 2;
+        let middle = left + (right - left) / 2;
         if arr[middle] == target {
             return middle as i32;
         } else if arr[middle] < target {
@@ -60,7 +59,6 @@ fn first_not_smaller(arr: Vec<i32>, target: i32) -> i32 {
 }
 
 fn find_first_occurrence(arr: Vec<i32>, target: i32) -> i32 {
-    let len = arr.len();
     let mut l = 0;
     let mut r = arr.len();
     let mut m = l + (r - l) / 2;
@@ -152,7 +150,7 @@ fn find_min_rotated(arr: Vec<i32>) -> i32 {
 
     // terminates l == r
     while l < r {
-        let mut m = l + (r - l) / 2;
+        let m = l + (r - l) / 2;
         if arr[m] <= arr[arr.len() - 1] {
             // this m becomes higher bound
             // pivot only could be below this m
@@ -239,16 +237,83 @@ fn peak_of_mountain_array(arr: Vec<i32>) -> i32 {
 // Explanation:
 // Assign [2, 3], [5], and [7] separately to workers. The minimum time is 7.
 
-fn newspapers_split(newspapers_read_times: Vec<i32>, num_coworkers: i32) -> i32 {
-    // WRITE YOUR BRILLIANT CODE HERE
-    0
+fn need_workers(newspapers_read_times: &Vec<i32>, coworker_budget: i32) -> Option<i32> {
+    let mut cowerkers = 0;
+    let mut current_worker_budget = 0;
+    for time in newspapers_read_times {
+
+        if *time > coworker_budget {
+            return None;
+        }
+        
+        current_worker_budget += *time;
+        
+        if current_worker_budget == coworker_budget {
+            cowerkers +=1;
+            current_worker_budget = 0;
+        } else if current_worker_budget > coworker_budget {
+            cowerkers +=1;
+            current_worker_budget = *time;
+        }
+    }
+
+    if current_worker_budget > 0 {
+        cowerkers +=1;    
+    }
+
+    return Some(cowerkers);
 }
 
+fn newspapers_split(newspapers_read_times: Vec<i32>, num_coworkers: i32) -> i32 {
+    let max: i32 = *newspapers_read_times.iter().max().unwrap();
+    let sum: i32 = newspapers_read_times.iter().sum();
+
+    let mut l = max;
+    let mut r = sum;
+    let mut ans = 0;
+
+    while l<r {
+        let m = l + (r-l)/2;
+        let Some(needs_workers) = need_workers(newspapers_read_times.as_ref(), m) else {
+            continue
+        };
+        
+        if needs_workers == num_coworkers {
+            ans = m;
+            r = m;
+        } else if needs_workers < num_coworkers {
+            // we could reduce budget per worker
+             r = m;
+        } else {
+            // we need more budget per worker
+             l = m + 1;
+        }
+    }
+    
+    r as i32
+}
 
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn newspapers_split_works() {
+        let input_target_result: Vec<(Vec<i32>, i32, i32)> = vec![
+            (vec![7,2,5,10,8], 2, 18),
+        ];
+
+        for (i, t, r) in input_target_result {
+            assert_eq!(
+                newspapers_split(i.clone(), t),
+                r,
+                "in {:?} target {} result {}",
+                i,
+                t,
+                r
+            )
+        }
+    }
 
     #[test]
     fn peak_of_mountain_array_works() {
