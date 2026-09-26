@@ -180,12 +180,71 @@ fn find_min_rotated(arr: Vec<i32>) -> i32 {
 
 // Explanation: The largest element is 3, and its index is 3.
 
+// if arr[m] < arr[m+1]
+// we are ascending os peak is ahead and whatever is behind could be discarded
+// so we move lower bound up l = m + 1;
+// else
+// we started to descend
+// and peak is either m itself or m - 1 (behind)
+// we shrink from above r = m (and keep m in the range)
+
 fn peak_of_mountain_array(arr: Vec<i32>) -> i32 {
     if arr.len() < 3 {
         return -1;
     }
+
+    let mut l = 0;
+    let mut r = arr.len() - 1;
+
+    while l < r {
+        let m = l + (r - l) / 2;
+        if arr[m] < arr[m + 1] {
+            l = m + 1;
+        } else {
+            r = m;
+        }
+    }
+
+    // l == r == m
+    l as i32
+}
+
+
+// You have a stack of newspapers in a fixed order. Each newspaper has a read time. You want to assign all newspapers to a group of at most num_coworkers workers.
+// Each worker is assigned a consecutive section of newspapers from the stack, and all workers read their assigned sections in parallel.
+
+// The constraint: you cannot reorder newspapers. If you assign newspapers at positions 1, 2, 3 to worker A, you cannot then assign newspaper 2 to worker B.
+// Each worker gets a consecutive block from the original stack.
+
+// Find the minimum time needed to read all newspapers. Since workers read in parallel, the total time equals the time taken by the slowest worker.
+
+// For example, with newspapers [7,2,5,10,8] and 2 workers, you could assign [7,2,5] to worker A (14 minutes total) and [10,8] to worker B (18 minutes total). 
+// Worker B finishes last, so the answer is 18 minutes.
+
+// Constraints
+// 1 <= newspapers_read_times.length <= 10^5
+// 1 <= newspapers_read_times[i] <= 10^5
+// 1 <= num_coworkers <= 10^5
+
+// Examples
+// Example 1:
+// Input: newspapers_read_times = [7,2,5,10,8], num_coworkers = 2
+// Output: 18
+// Explanation:
+// Assign first 3 newspapers to one coworker then assign the rest to another. The time it takes for the first 3 newspapers is 7 + 2 + 5 = 14 and for the last 2 is 10 + 8 = 18.
+
+// Example 2:
+// Input: newspapers_read_times = [2,3,5,7], num_coworkers = 3
+// Output: 7
+// Explanation:
+// Assign [2, 3], [5], and [7] separately to workers. The minimum time is 7.
+
+fn newspapers_split(newspapers_read_times: Vec<i32>, num_coworkers: i32) -> i32 {
+    // WRITE YOUR BRILLIANT CODE HERE
     0
 }
+
+
 
 #[cfg(test)]
 mod tests {
@@ -193,7 +252,33 @@ mod tests {
 
     #[test]
     fn peak_of_mountain_array_works() {
-        let input_target_result: Vec<(Vec<i32>, i32)> = vec![(vec![0, 1, 2, 3, 2, 1, 0], 3)];
+        let input_target_result: Vec<(Vec<i32>, i32)> = vec![
+            (vec![0, 1, 2, 3, 2, 1, 0], 3),
+            (vec![0, 10, 3, 2, 1, 0], 1),
+            (vec![0, 10, 0], 1),
+            (
+                vec![
+                    0, 1, 2, 12, 22, 32, 42, 52, 62, 72, 82, 92, 102, 112, 122, 132, 133, 132, 111,
+                    0,
+                ],
+                16,
+            ),
+            (vec![1, 2, 3, 4, 5, 4, 3, 2, 1], 4),
+            (vec![0, 1, 0], 1),
+            (vec![1, 5, 4, 3, 2], 1),
+            (
+                vec![10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 90, 80, 70, 60, 50],
+                9,
+            ),
+            (vec![5, 10, 15, 20, 25, 20, 15, 10, 5], 4),
+            (vec![1, 3, 2], 1),
+            (
+                vec![
+                    0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10, 8, 6, 4, 2, 0,
+                ],
+                10,
+            ),
+        ];
 
         for (i, r) in input_target_result {
             assert_eq!(
