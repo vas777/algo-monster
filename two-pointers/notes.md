@@ -42,3 +42,15 @@ then—assuming the loop terminates normally—the invariant is guaranteed to be
 
 4. `kinematic` - At the position of a target pointer upon termination (e.g., fast/slow pointers). 
    Invariant: After k steps, a fixed mathematical relationship holds between pointer positions (such as pos(fast) = 2 * pos(slow)), so when `fast` reaches the boundary, `slow` sits directly at the answer.
+
+# Same Direction
+- Prefix is correct
+- speed is correct
+- distance is correct 
+
+what to the left is correct
+
+fix in place  -> duplicate, 
+remove or compress without extra memory => duplicate
+keep only condition  => 
+maintain fixed gap => find middle of linked list, find N-th linked list;

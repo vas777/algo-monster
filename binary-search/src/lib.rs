@@ -207,7 +207,6 @@ fn peak_of_mountain_array(arr: Vec<i32>) -> i32 {
     l as i32
 }
 
-
 // You have a stack of newspapers in a fixed order. Each newspaper has a read time. You want to assign all newspapers to a group of at most num_coworkers workers.
 // Each worker is assigned a consecutive section of newspapers from the stack, and all workers read their assigned sections in parallel.
 
@@ -216,7 +215,7 @@ fn peak_of_mountain_array(arr: Vec<i32>) -> i32 {
 
 // Find the minimum time needed to read all newspapers. Since workers read in parallel, the total time equals the time taken by the slowest worker.
 
-// For example, with newspapers [7,2,5,10,8] and 2 workers, you could assign [7,2,5] to worker A (14 minutes total) and [10,8] to worker B (18 minutes total). 
+// For example, with newspapers [7,2,5,10,8] and 2 workers, you could assign [7,2,5] to worker A (14 minutes total) and [10,8] to worker B (18 minutes total).
 // Worker B finishes last, so the answer is 18 minutes.
 
 // Constraints
@@ -241,24 +240,23 @@ fn need_workers(newspapers_read_times: &Vec<i32>, coworker_budget: i32) -> Optio
     let mut cowerkers = 0;
     let mut current_worker_budget = 0;
     for time in newspapers_read_times {
-
         if *time > coworker_budget {
             return None;
         }
-        
+
         current_worker_budget += *time;
-        
+
         if current_worker_budget == coworker_budget {
-            cowerkers +=1;
+            cowerkers += 1;
             current_worker_budget = 0;
         } else if current_worker_budget > coworker_budget {
-            cowerkers +=1;
+            cowerkers += 1;
             current_worker_budget = *time;
         }
     }
 
     if current_worker_budget > 0 {
-        cowerkers +=1;    
+        cowerkers += 1;
     }
 
     return Some(cowerkers);
@@ -272,36 +270,33 @@ fn newspapers_split(newspapers_read_times: Vec<i32>, num_coworkers: i32) -> i32 
     let mut r = sum;
     let mut ans = 0;
 
-    while l<r {
-        let m = l + (r-l)/2;
+    while l < r {
+        let m = l + (r - l) / 2;
         let Some(needs_workers) = need_workers(newspapers_read_times.as_ref(), m) else {
-            continue
+            continue;
         };
-        
+
         if needs_workers == num_coworkers {
             ans = m;
             r = m;
         } else if needs_workers < num_coworkers {
             // we could reduce budget per worker
-             r = m;
+            r = m;
         } else {
             // we need more budget per worker
-             l = m + 1;
+            l = m + 1;
         }
     }
-    
+
     r as i32
 }
-
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
     fn newspapers_split_works() {
-        let input_target_result: Vec<(Vec<i32>, i32, i32)> = vec![
-            (vec![7,2,5,10,8], 2, 18),
-        ];
+        let input_target_result: Vec<(Vec<i32>, i32, i32)> = vec![(vec![7, 2, 5, 10, 8], 2, 18)];
 
         for (i, t, r) in input_target_result {
             assert_eq!(
