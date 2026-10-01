@@ -48,35 +48,31 @@ pub struct Node<T> {
 // slow must point at nth
 // keep prev to slow so it becomes new head to return
 pub fn remove_nth_from_end(head: Option<Box<Node<i32>>>, n: i32) -> Option<Box<Node<i32>>> {
-
     let mut new_head = Box::new(Node { val: 0, next: head });
 
     let mut fast = &new_head as *const Box<Node<i32>>;
-    
+
     unsafe {
-       
         for _ in 0..n {
-            if (*fast).next.is_none(){
-                return new_head.next
+            if (*fast).next.is_none() {
+                return new_head.next;
             }
             fast = (*fast).next.as_ref().unwrap();
         }
-        
-        let mut slow = &mut new_head  as *mut Box<Node<i32>>;
+
+        let mut slow = &mut new_head as *mut Box<Node<i32>>;
         while (*fast).next.is_some() {
             fast = (*fast).next.as_ref().unwrap();
             slow = (*slow).next.as_mut().unwrap();
         }
 
-        let mut node_to_remove = (*slow).next.take(); 
+        let mut node_to_remove = (*slow).next.take();
         let new_node = node_to_remove.as_mut().unwrap().next.take();
-         (*slow).next = new_node;
+        (*slow).next = new_node;
         // (*slow).next = node_to_remove.and_then(|n|n.next);
     }
 
-    
     new_head.next
-    
 }
 
 fn build_list<'a, T, I>(iter: &mut I) -> Result<List<T>, Box<dyn error::Error>>
