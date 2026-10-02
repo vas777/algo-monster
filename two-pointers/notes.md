@@ -54,3 +54,7 @@ fix in place  -> duplicate,
 remove or compress without extra memory => duplicate
 keep only condition  => 
 maintain fixed gap => find middle of linked list, find N-th linked list;
+
+# Two pointers
+
+# Sliding windows
