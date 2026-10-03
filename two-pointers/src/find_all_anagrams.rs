@@ -30,42 +30,35 @@
 // if set one == two
 // record most left index
 
-use std::{collections::HashMap};
-
 fn find_all_anagrams(original: String, check: String) -> Vec<i32> {
-    let mut check_freq: [i32;26] =[0;26] ;
-    let mut str_freq:[i32;26] =[0;26];
+    let mut check_freq: [i32; 26] = [0; 26];
+    let mut str_freq: [i32; 26] = [0; 26];
     let mut ans = Vec::new();
 
-    for c in check.as_bytes() {
-        check_freq[(b'a' - c) as usize] += 1;
+    if check.len() > original.len() {
+        return ans;
     }
 
-    let mut l = 0;
-    let mut r = check.len() - 1;
+    for c in check.as_bytes() {
+        check_freq[(c - b'a') as usize] += 1;
+    }
 
     let original_bytes = original.as_bytes();
-    for i in 0..r + 1 {
-        str_freq[(b'a' - original_bytes[i]) as usize] += 1;
+    for i in 0..check.len() {
+        str_freq[(original_bytes[i] - b'a') as usize] += 1;
     }
 
-    
-    loop {
-        
-        if str_freq.eq(&check_freq) {
-            eprintln!("equal");
-            ans.push(l as i32);
-        }
+    if str_freq.eq(&check_freq) {
+        ans.push(0);
+    }
 
-        str_freq[(b'a' - original_bytes[l]) as usize] -= 1;
-        str_freq[(b'a' - original_bytes[r]) as usize] -= 1;
-        l += 1;
-        r += 1;
-        if r == original.len() {
-            break;
+    for right_index in check.len()..original.len() {
+        str_freq[(original_bytes[right_index - check.len()] - b'a') as usize] -= 1;
+        str_freq[(original_bytes[right_index] - b'a') as usize] += 1;
+
+        if str_freq.eq(&check_freq) {
+            ans.push((right_index - check.len() + 1) as i32);
         }
-        str_freq[(b'a' - original_bytes[l]) as usize] += 1;
-        str_freq[(b'a' - original_bytes[r]) as usize] += 1;
     }
 
     ans
@@ -80,7 +73,15 @@ mod test {
     fn find_all_anagrams_works() {
         let results: Vec<(&str, &str, Vec<i32>)> = vec![
             ("abab", "ab", vec![0, 1, 2]),
-            ("cbababacd", "abc", vec![0, 6]),
+            ("cbaebabacd", "abc", vec![0, 6]),
+            ("nabanabannaabbaanana", "banana", vec![0, 3, 5, 6, 7, 13]),
+            (
+                "thequickbrownfoxjumpsoverthelazydog",
+                "thelazydogjumpsoverthequickbrownfox",
+                vec![0],
+            ),
+            ("abacbabc", "abc", vec![1, 2, 3, 5]),
+            ("afbe", "be", vec![2]),
         ];
         for (s, check, r) in results {
             assert_eq!(find_all_anagrams(s.to_owned(), check.to_owned()), r);

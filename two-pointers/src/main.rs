@@ -6,6 +6,7 @@ mod move_zeros;
 mod nth_node_in_ll;
 mod remove_duplicate;
 mod subarray_sum;
+mod subarray_sum_longest;
 mod two_sum_sorted;
 
 fn main() {
