@@ -48,7 +48,6 @@ mod tests {
             (string_to_vec("1 1 1 "), 3, 3),
             (string_to_vec("100"), 50, 1),
             (string_to_vec("50"), 100, 1),
-
         ];
 
         for (input, target, out) in test_cases {
