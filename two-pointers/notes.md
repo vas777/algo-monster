@@ -58,3 +58,74 @@ maintain fixed gap => find middle of linked list, find N-th linked list;
 # Two pointers
 
 # Sliding windows
+
+# Fast and Slow Family Map
+
+Cycle detection.
+
+condition to check
+If cycle does not exist fast will reach null.
+// check fast and fast.next for null
+If cycle exists fast and slow must meet.
+// check slow == fast
+
+# Two Pointers Decision Rule
+1. Am I going to maintain contiguous part of input ?
+Window same direction with constant gap
+2. Am I able to elimitate part of input because it is monotonic in some way ?
+start on Opposite ends 
+3. Am I modifying in place somehow, filtering ?
+start from the Same end and move pointers at different speed
+4. Linked list
+Fast/slow - two pointers in same direction but with lists;
+
+### from article
+Ask These Questions
+When you see a new problem, ask these questions in order.
+
+1. Am I maintaining a contiguous interval?
+If the answer depends on a subarray or substring between left and right, you may be looking at a sliding window problem.
+
+Typical signals:
+
+longest or shortest valid substring
+subarray satisfying a running condition
+counts, sums, or frequencies over a moving interval
+Examples:
+
+Largest Subarray Sum
+Longest Subarray Sum Smaller Than or Equal to Target
+Longest Substring Without Repeating Characters
+2. Can I safely eliminate one side?
+If the structure is sorted, symmetric, or has a bottleneck property, you may be looking at opposite-direction pointers.
+
+Typical signals:
+
+sorted array and pair target
+palindrome or mirror comparison
+boundary optimization where one side becomes provably useless
+Examples:
+
+Two Sum Sorted
+Valid Palindrome
+Container With Most Water
+3. Am I rewriting or filtering in place?
+If you are scanning the input once while building a cleaned or compacted version at the front, you may be looking at same-direction pointers.
+
+Typical signals:
+
+remove duplicates in-place
+move certain elements forward
+stable partitioning or compaction
+Examples:
+
+Remove Duplicates
+Move Zeros
+4. Am I reasoning about relative position in a linked list?
+If the structure is a linked list and you need the middle, a cycle, or the node before a target position, then fast/slow pointers or a fixed gap is often the right tool.
+
+Examples:
+
+Middle of a Linked List
+Remove N-th Node from End of Linked List
+Linked List Cycle

@@ -3,13 +3,10 @@ use std::collections::HashMap;
 // Follow-up: Count all subarrays
 // Return the number of subarrays whose sum equals target.
 
-
-// Given an array of integers nums and an integer k, 
+// Given an array of integers nums and an integer k,
 // return the total number of subarrays whose sum equals to k.
 
 // A subarray is a contiguous non-empty sequence of elements within an array.
-
-
 
 fn subarray_sum_total(arr: Vec<i32>, target: i32) -> i32 {
     let mut freq = HashMap::<i32, i32>::new();

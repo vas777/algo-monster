@@ -71,8 +71,6 @@ mod tests {
 
     #[test]
     fn middle_of_linked_list_works() {
-        let line = "1 2 3".to_owned();
-        // let head: List<i32> =
         let test_cases: Vec<(List<i32>, i32)> = vec![
             (
                 build_list(&mut "1 2 3".to_owned().split_whitespace()).unwrap(),
