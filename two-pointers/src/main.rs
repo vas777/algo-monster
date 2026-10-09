@@ -1,5 +1,6 @@
 mod container_with_most_water;
 mod find_all_anagrams;
+mod get_minimum_window;
 mod has_cycle;
 mod is_palindrome;
 mod least_consecutive_cards_to_match;
