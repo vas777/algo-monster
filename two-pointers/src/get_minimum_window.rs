@@ -32,39 +32,70 @@ fn get_minimum_window(original: String, check: String) -> String {
     }
 
     let mut window_count = HashMap::<char, usize>::new();
-    let mut original_chars: Vec<char> = original.chars().collect();
+    let original_chars: Vec<char> = original.chars().collect();
     let m = original.len();
 
-    let required = check_count.len();
-    let mut satisfied = 0;
     let mut window: isize = -1;
     let mut window_len = m + 1;
+    let mut satisfied = 0;
+    let required = check_count.len();
     let mut l = 0;
 
     for r in 0..m {
         let right_char = original_chars[r];
-        if let Some(original_count) = check_count.get(&right_char) {
+        if let Some(&original_count) = check_count.get(&right_char) {
             let window_count = window_count.entry(right_char).or_insert(0);
             *window_count += 1;
 
-            if window_count == original_count {
+            if *window_count == original_count {
                 satisfied += 1;
             }
         }
 
         while required == satisfied {
-            let curr_len = r - l + 1;
+            let curr_window_len = r - l + 1;
 
-            // check if this the better window
-            // tie break
+            let found_better_window = if curr_window_len < window_len {
+                //found better window
+                true
+            } else if curr_window_len == window_len && window >= 0 {
+                // lexicographical comparison
+                let curr_candidate = &original_chars[l..l + curr_window_len];
+                let existing_candidate =
+                    &original_chars[window as usize..window as usize + window_len];
+                curr_candidate < existing_candidate
+            } else {
+                false
+            };
+
+            if found_better_window {
+                window = l as isize;
+                window_len = curr_window_len;
+            }
 
             // shrink from left
             // if we are removing char from check
             // decrease satisfied count
+            let left_char = original_chars[l];
+            if let Some(&original_count) = check_count.get(&left_char) {
+                let window_count = window_count.get_mut(&left_char).expect("must");
+                *window_count -= 1;
+
+                if *window_count < original_count {
+                    satisfied -= 1;
+                }
+            }
+            l += 1;
         }
     }
 
-    String::new()
+    if window >= 0 {
+        original_chars[window as usize..window as usize + window_len]
+            .iter()
+            .collect()
+    } else {
+        String::new()
+    }
 }
 
 #[cfg(test)]

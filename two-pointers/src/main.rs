@@ -5,6 +5,7 @@ mod has_cycle;
 mod is_palindrome;
 mod least_consecutive_cards_to_match;
 mod longest_substring_without_repeating_characters;
+mod maximum_score;
 mod middle_linked;
 mod move_zeros;
 mod nth_node_in_ll;

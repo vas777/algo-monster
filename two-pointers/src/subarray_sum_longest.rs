@@ -10,8 +10,6 @@
 // shrink window
 // evaluate window len
 
-use std::cmp::max;
-
 fn subarray_sum_longest(nums: Vec<i32>, target: i32) -> i32 {
     let mut l = 0;
     let mut window_sum = 0;
