@@ -7,5 +7,9 @@ name = "binary-search"
 version = "0.1.0"
 
 [[package]]
+name = "dfs"
+version = "0.1.0"
+
+[[package]]
 name = "two-pointers"
 version = "0.1.0"
