@@ -129,3 +129,96 @@ Examples:
 Middle of a Linked List
 Remove N-th Node from End of Linked List
 Linked List Cycle
+
+
+# Two Pointers Synthesis
+By this point, you have seen several different algorithms that all fall under the label "two pointers."
+
+The purpose of this recap is to compress them into a smaller set of mental models.
+
+The Real Question
+When a new interview problem feels like it might involve two pointers, do not ask:
+
+"Which template do I remember?"
+
+Ask:
+
+"What do the pointers represent, and what invariant makes pointer movement safe?"
+
+The Four Mental Models
+1. Same direction: build the answer as you scan
+Representative problems:
+
+Remove Duplicates
+Move Zeros
+The left side of the array has meaning: it already stores the correct answer prefix.
+
+2. Opposite direction: eliminate impossible boundary choices
+Representative problems:
+
+Two Sum Sorted
+Valid Palindrome
+Container With Most Water
+The interval is a shrinking search space. Each pointer move rules out candidates.
+
+3. Sliding window: maintain a valid interval
+Representative problems:
+
+Largest Subarray Sum
+Longest Subarray Sum Smaller Than or Equal to Target
+Longest Substring Without Repeating Characters
+Minimum Window Substring
+The interval itself is the object you care about, so the invariant describes the whole window.
+
+4. Fast/slow: encode relative position without indexing
+Representative problems:
+
+Middle of a Linked List
+Linked List Cycle
+Remove N-th Node from End of Linked List
+The key idea is distance or relative speed.
+
+One Concept That Unifies The Section: Invariants
+Every correct two-pointer solution has an invariant.
+
+Here is what that invariant looks like in each family:
+
+same direction: the prefix before the slow pointer is already correct
+opposite direction: everything outside the current search range has been eliminated
+sliding window: the current interval is valid at the moment you update the answer
+fast/slow: the distance or speed relationship between pointers has a fixed meaning
+If you cannot state the invariant clearly, you probably do not yet know why the solution works.
+
+Common Confusions
+"This has two boundaries, so it must be sliding window."
+Not necessarily.
+
+Container With Most Water has two moving boundaries, but it is not a sliding window problem because the interval does not have a maintained validity condition. The two boundaries only define the remaining search space.
+
+"This is a linked-list problem, so it is a different topic."
+Not really.
+
+Fast/slow linked-list problems are still two-pointer problems. They simply use relative movement instead of indexing.
+
+"I know the code pattern, so I understand the pattern."
+This is the biggest trap.
+
+If you memorize:
+
+move left when sum is too small
+shrink while invalid
+advance fast twice
+without knowing the invariant, the method will break as soon as the next problem changes the movement rule slightly.
+
+A Practical Checklist For New Problems
+Before coding, answer these questions:
+
+What do left and right represent?
+What stays true after each pointer move?
+Why is moving this pointer safe?
+At what moment is it valid to update the answer?
+If you can answer all four, you usually understand the problem well enough to code it.
+
+The speedrun problems that follow are best used as a classification drill:
+
+do not just solve them. First say which family they belong to and what invariant you expect the loop to maintain.

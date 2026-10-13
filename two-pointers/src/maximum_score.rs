@@ -15,9 +15,9 @@
 
 // Output: 30
 
-// shared values are decision points that cut 
+// shared values are decision points that cut
 // arrays in shared sections
-//  [2, 4, | 5, 8, | 10] 
+//  [2, 4, | 5, 8, | 10]
 //  [   4, | 6, 8, | 9]
 // process everything till decision points
 // chose max between two
