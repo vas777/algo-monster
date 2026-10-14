@@ -27,8 +27,10 @@ fn visit(tree: &Tree<i32>) -> (bool, i32) {
     let (bl, hl) = visit(&root.left);
     let (br, hr) = visit(&root.right);
 
-    if !(bl && br) {return (false, 0)};
-    
+    if !(bl && br) {
+        return (false, 0);
+    };
+
     let balanced = (hl - hr).abs() <= 1;
 
     (balanced, std::cmp::max(hl, hr) + 1)
