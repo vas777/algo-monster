@@ -1,3 +1,5 @@
+mod bst;
+mod invert_binary_tree;
 mod is_balanced;
 mod subtree_of_another_tree;
 mod tree_max_depth;

@@ -5,23 +5,6 @@
 
 use dfs::{Tree, build_tree};
 
-// let Some(n) = node else {
-// return(true, 0);
-// };
-
-// post order traversal
-// (vall, eq) = visit(root.left)
-// (valsl, eq) = visit(sub_root.left)
-// let left_eq = vall == valsl;
-
-// (valr, eq) = visit(root.right)
-// (valsr, eq) = visit(sub_root.right)
-// let right_eq = valr == valsr;
-
-// let node_eq = root.val == sub_root.val;
-
-// return ( node_eq && left_eq && right_eq, node.val)
-
 fn similar(root: &Tree<i32>, sub_root: &Tree<i32>) -> bool {
     if root.is_none() && sub_root.is_none() {
         return true;
