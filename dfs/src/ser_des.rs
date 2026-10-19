@@ -1,6 +1,6 @@
 // Serializing and Deserializing Binary Tree
 // Prerequisite: DFS on Tree
-// 
+//
 // Given a binary tree, write a serialize function that converts the tree into a string and a deserialize function that converts
 // a string back to a binary tree. You may serialize the tree into any string representation you want, as long as it can be deserialized properly.
 
@@ -17,12 +17,15 @@ struct Node {
 
 impl Node {
     fn new(val: i32) -> Self {
-        Node { val, left: None, right: None }
+        Node {
+            val,
+            left: None,
+            right: None,
+        }
     }
 }
 
 fn serialize(root: &Option<Box<Node>>) -> String {
-    
     let Some(node) = root else {
         return String::from("x");
     };
