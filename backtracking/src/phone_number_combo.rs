@@ -53,7 +53,6 @@ fn letter_combinations_of_phone_number(digits: String) -> Vec<String> {
     res
 }
 
-
 #[cfg(test)]
 mod test {
 
@@ -63,7 +62,7 @@ mod test {
     fn letter_combinations_of_phone_number_works() {
         let tests = vec![(
             "56".to_owned(),
-            vec!["jm","jn","jo","km","kn","ko","lm","ln","lo"],
+            vec!["jm", "jn", "jo", "km", "kn", "ko", "lm", "ln", "lo"],
         )];
         for (t, r) in tests {
             assert_eq!(letter_combinations_of_phone_number(t), r)
