@@ -53,7 +53,7 @@ fn dfs(n: i32, open_count: i32, close_count: i32, path: &mut String, res: &mut V
             path.push_str(p);
             dfs(n, open_count + 1, close_count, path, res);
             path.pop();
-        } else if close_count < open_count {
+        } else if p == ")" && close_count < open_count {
             path.push_str(p);
             dfs(n, open_count, close_count + 1, path, res);
             path.pop();
@@ -89,7 +89,7 @@ mod test {
 
         for (t, r) in tests {
             println!("{t}");
-            assert_eq!(is_valid_parentheses(t.to_string()), r);
+            assert_eq!(is_valid_parentheses(t), r);
         }
     }
 }
