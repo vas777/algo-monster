@@ -1,3 +1,4 @@
+mod decode_ways;
 mod generate_parentheses;
 mod letter_combination;
 mod partition_palindrom;

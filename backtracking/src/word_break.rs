@@ -33,6 +33,12 @@ fn dfs(target: &str, words: &[String], start_index: usize, memo: &mut Vec<bool>)
 
 fn word_break(s: String, words: Vec<String>) -> bool {
     // keeps track of position that don't have matching word
+    // so `go back` and try another word for the previous
+    // index
     let mut memo = vec![true; s.len()];
     dfs(&s, words.as_slice(), 0, &mut memo)
 }
+
+// time complexity
+// per_unique position check every word and compare at least longest word
+// O(s.len * words.len() * max_len_of_word)
