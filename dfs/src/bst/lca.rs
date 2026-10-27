@@ -6,7 +6,7 @@
 
 // Given two nodes of a binary tree, find their lowest common ancestor.
 
-use dfs::{Node, Tree};
+use dfs::Tree;
 
 fn find<'a>(root: &'a Tree<i32>, p: i32, q: i32) -> &'a Tree<i32> {
     let Some(node) = root else {
