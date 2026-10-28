@@ -21,18 +21,15 @@
 //   []
 // ]
 
-
-fn dfs(start_index: usize, nums: &[i32], path: &mut Vec<i32> , res: &mut Vec<Vec<i32>> ) {
+fn dfs(start_index: usize, nums: &[i32], path: &mut Vec<i32>, res: &mut Vec<Vec<i32>>) {
     res.push(path.clone());
-   
+
     for i in start_index..nums.len() {
         path.push(nums[i]);
-        dfs(i+1, nums, path, res);
+        dfs(i + 1, nums, path, res);
         path.pop();
     }
-
 }
-
 
 fn subsets(nums: Vec<i32>) -> Vec<Vec<i32>> {
     let mut res = Vec::<Vec<i32>>::new();

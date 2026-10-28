@@ -23,7 +23,7 @@ fn coin_change_dfs(coins: &Vec<i32>, remaining_amount: i32, memo: &mut Vec<i32>)
 
     if memo[remaining_amount as usize] >= -1 {
         return memo[remaining_amount as usize];
-    } 
+    }
 
     let mut curr_min = i32::MAX;
     let mut r = 0;
