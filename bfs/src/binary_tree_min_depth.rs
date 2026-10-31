@@ -12,7 +12,7 @@ fn binary_tree_min_depth(root: Tree<i32>) -> i32 {
     order.push_back(node);
 
     while let Some(n) = order.pop_front() {
-        node_per_level -=1;
+        node_per_level -= 1;
         if let Some(l) = n.left.as_ref() {
             order.push_back(l);
         }
@@ -29,7 +29,6 @@ fn binary_tree_min_depth(root: Tree<i32>) -> i32 {
             node_per_level = order.len();
             level += 1;
         }
-    
     }
 
     level
