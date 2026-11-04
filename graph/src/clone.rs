@@ -33,12 +33,7 @@ fn clone_graph_trivial(adj_list: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     adj_list.clone()
 }
 
-fn dfs(
-    node: i32,
-    adj_list: &[Vec<i32>],
-    visited: &mut HashSet<i32>,
-    res: &mut [Vec<i32>],
-) {
+fn dfs(node: i32, adj_list: &[Vec<i32>], visited: &mut HashSet<i32>, res: &mut [Vec<i32>]) {
     visited.insert(node);
     let idx = (node - 1) as usize;
 
