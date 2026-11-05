@@ -7,7 +7,7 @@
 // or all 0 cells. Cells can only be adjacent to each other
 // horizontally or vertically, not diagonally.
 
-use std::collections::{VecDeque};
+use std::collections::VecDeque;
 
 fn get_neighbours(r: usize, c: usize, grid: &[Vec<i32>], value: i32) -> Vec<(usize, usize)> {
     let row_len = grid.len();
