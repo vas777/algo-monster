@@ -33,7 +33,48 @@
 // Constraints
 // 1 <= n, m <= 500
 
-fn map_gate_distances(dungeon_map: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
-    // WRITE YOUR BRILLIANT CODE HERE
-    Vec::new()
+use std::collections::VecDeque;
+
+fn get_neighbours(r: usize, c: usize, grid: &[Vec<i32>]) -> ([(usize, usize); 4], usize) {
+    let row_len = grid.len();
+    let col_len = grid[0].len();
+    let mut res: [(usize, usize); 4] = [(0, 0); 4];
+    let delta_row: [i32; 4] = [-1, 0, 1, 0];
+    let delta_col: [i32; 4] = [0, 1, 0, -1];
+    let mut len = 0;
+    for i in 0..4 {
+        let row = r as i32 + delta_row[i];
+        let col = c as i32 + delta_col[i];
+        if 0 <= row && row < row_len as i32 && 0 <= col && col < col_len as i32 {
+            res[len] = (row as usize, col as usize);
+            len += 1;
+        }
+    }
+
+    (res, len)
+}
+
+fn map_gate_distances(mut dungeon_map: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
+    let mut queue =
+        VecDeque::<(usize, usize)>::with_capacity(dungeon_map.len() * dungeon_map[0].len());
+
+    for i in 0..dungeon_map.len() {
+        for j in 0..dungeon_map[0].len() {
+            if dungeon_map[i][j] == 0 {
+                queue.push_back((i, j));
+            }
+        }
+    }
+
+    while let Some((r, c)) = queue.pop_front() {
+        let (n, len) = get_neighbours(r, c, &dungeon_map);
+        for (nr, nc) in n[..len].iter().copied() {
+            if dungeon_map[nr][nc] == i32::MAX {
+                dungeon_map[nr][nc] = dungeon_map[r][c] + 1;
+                queue.push_back((nr, nc));
+            }
+        }
+    }
+
+    dungeon_map
 }
