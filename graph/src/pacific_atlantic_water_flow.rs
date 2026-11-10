@@ -91,7 +91,7 @@ fn pacific_atlantic_water_flow(heights: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
 
     for i in 0..rows {
         for j in 0..cols {
-            if pacific_ocean[i][j] && pacific_ocean[i][j] == atlantic_ocean[i][j] {
+            if pacific_ocean[i][j] && atlantic_ocean[i][j] {
                 res.push(vec![i as i32, j as i32]);
             }
         }
