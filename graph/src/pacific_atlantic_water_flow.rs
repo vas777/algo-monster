@@ -56,7 +56,7 @@ fn populate_ocean(
         for (nr, nc) in n[..len].iter().copied() {
             if !reachable[nr][nc] && heights[r][c] <= heights[nr][nc] {
                 reachable[nr][nc] = true;
-                init_queue.push_back((nr,nc));
+                init_queue.push_back((nr, nc));
             }
         }
     }
