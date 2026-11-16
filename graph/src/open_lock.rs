@@ -25,21 +25,52 @@
 
 use std::collections::{HashSet, VecDeque};
 
+fn get_combos(combo: [u8; 4]) -> [[u8; 4]; 8] {
+    let mut res = [combo; 8];
+    // 0000 gives 8 combinations
+    // rotate up (+1)
+    // 1000, 0100, 0010, 0001
+    for e in 0..=3 {
+        if res[e][e] == b'9' {
+            res[e][e] = b'0';
+        } else {
+            res[e][e] += 1;
+        }
+    }
+
+    // rotate down (-1)
+    // 9000, 0900, 0090, 0009
+    for e in 0..=3 {
+        if res[e + 4][e] == b'0' {
+            res[e + 4][e] = b'9';
+        } else {
+            res[e + 4][e] -= 1;
+        }
+    }
+
+    res
+}
+
 fn num_steps(target_combo: String, trapped_combos: Vec<String>) -> i32 {
     let mut order = VecDeque::<[u8; 4]>::new();
     let mut visited = HashSet::<[u8; 4]>::new();
 
     for c in trapped_combos {
-        let b = c - b'0';
+        // deadends are visited
         visited.insert(c.as_bytes().try_into().unwrap());
     }
 
-    order.push_back("0000".as_bytes().try_into().unwrap());
-    visited.insert("0000".as_bytes().try_into().unwrap());
+    order.push_back([b'0'; 4]);
+    if !visited.insert([b'0'; 4]) {
+        // was in trapped_combos
+        return -1;
+    }
 
     let mut distance = 0;
-    let target = target_combo.as_bytes().try_into().unwrap();
-
+    let target: [u8; 4] = target_combo.as_bytes().try_into().unwrap();
+    if target == [b'0'; 4] {
+        return 0;
+    }
     while !order.is_empty() {
         distance += 1;
         for _ in 0..order.len() {
@@ -49,6 +80,8 @@ fn num_steps(target_combo: String, trapped_combos: Vec<String>) -> i32 {
                     if c == target {
                         return distance;
                     }
+                    // .insert succeeds iff combination
+                    // was not inserted before
                     if visited.insert(c) {
                         order.push_back(c);
                     }
@@ -56,6 +89,5 @@ fn num_steps(target_combo: String, trapped_combos: Vec<String>) -> i32 {
             }
         }
     }
-
-    0
+    -1
 }
