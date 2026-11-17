@@ -68,18 +68,20 @@ fn num_steps(target_combo: String, trapped_combos: Vec<String>) -> i32 {
 
     let mut distance = 0;
     let target: [u8; 4] = target_combo.as_bytes().try_into().unwrap();
-    if target == [b'0'; 4] {
-        return 0;
-    }
+    // if target == [b'0'; 4] {
+    //     return 0;
+    // }
     while !order.is_empty() {
-        distance += 1;
+        // distance += 1 here if we look for the solution 
+        // at the `next level` terminates faster
+        // but needs check if target is 0000
         for _ in 0..order.len() {
             if let Some(combo) = order.pop_front() {
+                if combo == target {
+                    return distance;
+                }
                 let next_combos = get_combos(combo);
                 for c in next_combos {
-                    if c == target {
-                        return distance;
-                    }
                     // .insert succeeds iff combination
                     // was not inserted before
                     if visited.insert(c) {
@@ -88,6 +90,7 @@ fn num_steps(target_combo: String, trapped_combos: Vec<String>) -> i32 {
                 }
             }
         }
+        distance += 1;
     }
     -1
 }

@@ -6,8 +6,8 @@ mod map_gate_distances;
 mod open_lock;
 mod pacific_atlantic_water_flow;
 mod shortest_path;
-mod word_ladder;
 mod sliding_puzzle;
+mod word_ladder;
 fn main() {
     println!("Hello, world!");
 }
