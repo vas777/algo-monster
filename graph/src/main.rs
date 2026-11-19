@@ -7,7 +7,9 @@ mod open_lock;
 mod pacific_atlantic_water_flow;
 mod shortest_path;
 mod sliding_puzzle;
+mod topological_sort;
 mod word_ladder;
+
 fn main() {
     println!("Hello, world!");
 }

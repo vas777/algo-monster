@@ -72,7 +72,7 @@ fn num_steps(target_combo: String, trapped_combos: Vec<String>) -> i32 {
     //     return 0;
     // }
     while !order.is_empty() {
-        // distance += 1 here if we look for the solution 
+        // distance += 1 here if we look for the solution
         // at the `next level` terminates faster
         // but needs check if target is 0000
         for _ in 0..order.len() {
