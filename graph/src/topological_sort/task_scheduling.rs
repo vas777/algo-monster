@@ -15,47 +15,58 @@
 
 use std::collections::{HashMap, VecDeque};
 
-fn build_indegree<'a>(tasks: &Vec<String>, requirements: &'a Vec<Vec<String>>) -> HashMap<&'a String, (i32, Vec<&'a String>)> {
-    let mut res = HashMap::<&String, (i32, Vec<&String>)>::new();
+fn build_indegree<'a, 'b: 'a>(
+    tasks: &'b Vec<String>,
+    requirements: &'a Vec<Vec<String>>,
+) -> (HashMap<&'a str, i32>, HashMap<&'a str, Vec<&'a str>>) {
+    let mut indegree = HashMap::<&str, i32>::new();
+    let mut adj = HashMap::<&str, Vec<&str>>::new();
 
+    // if node is not in neighbour
+    // it won't be inserted unless this loop
     for t in tasks {
-        res.entry(t).or_default();
+        indegree.entry(t).or_default();
     }
 
     for node in requirements {
-        // second elements becomes neighbours
-        // or in other words comes after first
-        // so increase its in-degree
-        let current_node = node.iter().nth(0).unwrap();
-        let mut curr_node_entry = res.get_mut(current_node).unwrap();
+        let [current_node, neighbor] = node.as_slice() else {
+            continue;
+        };
 
-        for neighbours in node.iter().skip(0) {
-            // add to neighbours of current node
-            curr_node_entry.1.push(neighbours);
-            // increment indegree of neighour
-            if let Some(n_v) = res.get_mut(neighbours) {
-                n_v.0 += 1;
-
-            }
-        }
+        adj.entry(current_node).or_default().push(neighbor);
+        *indegree.entry(neighbor).or_insert(0) += 1;
     }
-    res
+    (indegree, adj)
 }
 
 fn task_scheduling(tasks: Vec<String>, requirements: Vec<Vec<String>>) -> Vec<String> {
-    let mut res = Vec::<String>::with_capacity(tasks.len());
-    let mut order = VecDeque::<&String>::new();
-    let indegrees = build_indegree(&requirements);
+    let mut res = Vec::<&str>::new();
+    let mut order = VecDeque::<&str>::new();
+    let (mut indegrees, adj) = build_indegree(&tasks, &requirements);
 
-    for (k, v) in indegrees {
-        if v == 0 {
+    for (k, v) in indegrees.iter() {
+        if *v == 0 {
             order.push_back(k);
         }
     }
 
-    while !order.is_empty() {
-        if let Some(node) = order.pop_front() {}
+    while let Some(node) = order.pop_front() {
+        res.push(node);
+        if let Some(neighbors) = adj.get(node) {
+            for &neighbor in neighbors {
+                if let Some(value) = indegrees.get_mut(neighbor) {
+                    *value -= 1;
+                    if *value == 0 {
+                        order.push_back(neighbor);
+                    }
+                }
+            }
+        }
     }
 
-    Vec::new()
+    if res.len() == tasks.len() {
+        res.into_iter().map(|s| s.to_owned()).collect()
+    } else {
+        Vec::new()
+    }
 }
