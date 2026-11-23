@@ -54,7 +54,66 @@
 // 1 <= m <= 10^4
 // 1 <= len(seqs[i]) <= n
 
-// fn sequence_reconstruction(original: Vec<i32>, seqs: Vec<Vec<i32>>) -> bool {
-//     // WRITE YOUR BRILLIANT CODE HERE
-//     false
-// }
+use std::collections::{HashMap, HashSet, VecDeque};
+
+fn sequence_reconstruction(original: Vec<i32>, seqs: Vec<Vec<i32>>) -> bool {
+    let mut neighbors = HashMap::<i32, HashSet<i32>>::new();
+    let mut order = VecDeque::<i32>::new();
+    let mut indegree = HashMap::<i32, i32>::new();
+    let mut res = Vec::<i32>::new();
+    let mut min = i32::MAX;
+    let mut max = i32::MIN;
+
+    for o in original.iter() {
+        min = min.min(*o);
+        max = max.max(*o);
+        indegree.insert(*o, 0);
+    }
+
+    // process seqs with windows(2) to produce
+    // neighbors list
+    for s in seqs {
+        let iter = s.windows(2);
+        for w in iter {
+            
+            if neighbors.entry(w[0]).or_default().insert(w[1]) {
+                *indegree.entry(w[1]).or_insert(0) += 1;
+            }
+        }
+    }
+
+    for (k, v) in indegree.iter() {
+        // sequence might have elements outside original
+        // range
+        if min <= *k && *k <= max {
+            if *v == 0 {
+                order.push_back(*k);
+            }
+        } else {
+            return false;
+        }
+    }
+
+    if order.len() > 1 {
+        return false;
+    }
+
+    while let Some(element) = order.pop_front() {
+        res.push(element);
+        if let Some(ng_list) = neighbors.get(&element) {
+            for ng in ng_list {
+                if let Some(ng_indegree) = indegree.get_mut(ng) {
+                    *ng_indegree -= 1;
+                    if *ng_indegree == 0 {
+                        order.push_back(*ng);
+                        if order.len() > 1 {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    res == original
+}
