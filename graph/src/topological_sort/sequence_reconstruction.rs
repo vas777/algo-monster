@@ -54,7 +54,10 @@
 // 1 <= m <= 10^4
 // 1 <= len(seqs[i]) <= n
 
-use std::collections::{HashMap, HashSet, VecDeque};
+use std::{
+    collections::{HashMap, HashSet, VecDeque},
+    ops::Add,
+};
 
 fn sequence_reconstruction(original: Vec<i32>, seqs: Vec<Vec<i32>>) -> bool {
     let mut neighbors = HashMap::<i32, HashSet<i32>>::new();
@@ -73,11 +76,15 @@ fn sequence_reconstruction(original: Vec<i32>, seqs: Vec<Vec<i32>>) -> bool {
     // process seqs with windows(2) to produce
     // neighbors list
     for s in seqs {
+        if s.iter().any(|&x| x < min || x > max) {
+            return false;
+        }
         let iter = s.windows(2);
         for w in iter {
-            
             if neighbors.entry(w[0]).or_default().insert(w[1]) {
-                *indegree.entry(w[1]).or_insert(0) += 1;
+                indegree.entry(w[1]).and_modify(|x| {
+                    *x += 1;
+                });
             }
         }
     }
@@ -85,12 +92,8 @@ fn sequence_reconstruction(original: Vec<i32>, seqs: Vec<Vec<i32>>) -> bool {
     for (k, v) in indegree.iter() {
         // sequence might have elements outside original
         // range
-        if min <= *k && *k <= max {
-            if *v == 0 {
-                order.push_back(*k);
-            }
-        } else {
-            return false;
+        if *v == 0 {
+            order.push_back(*k);
         }
     }
 
