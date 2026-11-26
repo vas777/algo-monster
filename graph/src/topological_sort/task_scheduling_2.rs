@@ -20,6 +20,9 @@
 
 // The longest dependency chain is c -> b -> d, so the minimum total time is 2 + 1 + 1 = 4.
 
+// My initial idea was to find maximum duration at each tree level, but that is incorrect but close to
+// the solution. Which is maximum duration among all dependencies.
+
 use std::collections::{HashMap, VecDeque};
 
 fn get_neighbors<'a>(
@@ -53,12 +56,11 @@ fn get_neighbors<'a>(
 }
 
 fn task_scheduling_2(tasks: Vec<String>, times: Vec<i32>, requirements: Vec<Vec<String>>) -> i32 {
-    // let tasks = tasks.iter().map(|s| s.as_str()).collect::<Vec<&str>>();
-    let mut order = VecDeque::<&str>::new();
-    let mut finish_time = HashMap::<&str, i32>::new();
+    let mut order = VecDeque::<&str>::with_capacity(tasks.len());
+    // TODO: map task names to numbers and don't use that many hash maps
+    let mut earliest_start = HashMap::<&str, i32>::new();
     let (mut indegrees, adj, duration) = get_neighbors(&tasks, &times, &requirements);
-    let mut total = 0;
-    finish_time = duration.clone();
+    let mut max_duration = 0;
 
     for (k, v) in indegrees.iter() {
         if *v == 0 {
@@ -66,12 +68,16 @@ fn task_scheduling_2(tasks: Vec<String>, times: Vec<i32>, requirements: Vec<Vec<
         }
     }
 
+    for task in tasks.iter() {
+        earliest_start.entry(task).or_default();
+    }
+
     while let Some(node) = order.pop_front() {
-        let d = duration[node];
-        total += d;
-        // finish_time[node] =
+        let node_finish = duration[node] + earliest_start[node];
+        max_duration = max_duration.max(node_finish);
         if let Some(neighbors) = adj.get(node) {
             for &neighbor in neighbors {
+                earliest_start.insert(neighbor, earliest_start[neighbor].max(node_finish));
                 if let Some(value) = indegrees.get_mut(neighbor) {
                     *value -= 1;
                     if *value == 0 {
@@ -82,5 +88,5 @@ fn task_scheduling_2(tasks: Vec<String>, times: Vec<i32>, requirements: Vec<Vec<
         }
     }
 
-    total
+    max_duration
 }
